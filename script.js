@@ -1,4 +1,10 @@
 const quotes = {
+   "- 123456789",
+    
+    "- تنواننزوتنن",
+    "- اتولهنلعن لا يمكن",
+    "-
+    
     "- Walt Disney": '"The Way Get Started Is To Quit Talking And Begin Doing."',
     can help an individual more than to place responsibility on him, an
 }
