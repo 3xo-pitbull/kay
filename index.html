@@ -18,10 +18,25 @@
                 .then(data => {
                     // تحديد رقم عشوائي من الأرقام المتاحة
                     const randomNumbers = data.numbers;
-                    const randomNumber = randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
+                    const randomNumberIndex = Math.floor(Math.random() * randomNumbers.length);
+                    const randomNumber = randomNumbers[randomNumberIndex];
+
+                    // حذف الرقم من القائمة
+                    randomNumbers.splice(randomNumberIndex, 1);
 
                     // عرض الرقم في الصفحة
                     document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+
+                    // تحديث ملف JSON بعد حذف الرقم
+                    const updatedData = { numbers: randomNumbers };
+                    fetch('data.json', {
+                        method: 'PUT', // يمكنك استخدام 'POST' أيضًا حسب الحاجة
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updatedData),
+                    })
+                    .catch(error => console.error('حدث خطأ في تحديث الملف JSON:', error));
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
