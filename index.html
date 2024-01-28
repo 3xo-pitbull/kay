@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Quote Generator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src ="script.js" defer></script>
+  <meta charset="UTF-8">
+  <title>قراءة رقم عشوائي من ملف نصي</title>
+  <script>
+    document.getElementById('readFileButton').addEventListener('click', readFile);
+
+    function readFile() {
+      fetch('path/to/your/text/file.txt') // استبدل بمسار الملف الفعلي
+        .then(response => response.text())
+        .then(data => {
+          const lines = data.split('\n'); // افصل النص إلى أسطر
+          const randomNumber = parseInt(lines[Math.floor(Math.random() * lines.length)]);
+
+          if (!isNaN(randomNumber)) {
+            alert("الرقم العشوائي: " + randomNumber);
+          } else {
+            alert("لم يتم العثور على رقم عشوائي صالح في الملف.");
+          }
+        })
+        .catch(error => console.error('حدث خطأ: ', error));
+    }
+  </script>
 </head>
 <body>
-    <div class="container">
-        <div class="quotes-container">
-            <div class="inner-quotes-container">
-                <p id="quote"></p>
-                <h3 id="author"></h3>
-            </div>
-            <div class="quote-btn">
-                <button id="generate">Generate Quote</button>
-            </div>
-        </div>
-    </div>
+  <h1>قراءة رقم عشوائي من ملف نصي</h1>
+  <button id="readFileButton">قراءة الملف</button>
 </body>
 </html>
