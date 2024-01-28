@@ -60,7 +60,7 @@
   }
 
   function generateAndDisplayKey() {
-    fetch('txt.json')  // قم بتغيير 'your_file.json' إلى اسم الملف الفعلي
+    fetch('your_file.json')  // قم بتغيير 'your_file.json' إلى اسم الملف الفعلي
       .then(response => response.json())
       .then(data => {
         const dailyKey = data.dailyKey;
@@ -86,7 +86,7 @@
         document.getElementById("countdown").innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
         countdownValue--;
 
-        requestAnimationFrame(updateCountdown);
+        setTimeout(updateCountdown, 1000);
       } else {
         document.getElementById("countdownContainer").style.display = "none";
       }
@@ -112,7 +112,7 @@
           countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
           countdownValue--;
 
-          requestAnimationFrame(updateCountdown);
+          setTimeout(updateCountdown, 1000);
         } else {
           countdownContainer.style.display = "none";
         }
