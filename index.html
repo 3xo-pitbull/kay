@@ -27,8 +27,11 @@
 
             // عرض الأرقام العشوائية في القائمة
             numbers.forEach(number => {
+                // إنشاء عنصر li لكل رقم
                 const listItem = document.createElement('li');
                 listItem.textContent = number;
+
+                // إضافة العنصر إلى القائمة
                 listElement.appendChild(listItem);
             });
         }
