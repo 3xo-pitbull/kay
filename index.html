@@ -3,25 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مولد أرقام عشوائية</title>
+  <title>عرض رقم عشوائي</title>
   <style>
     body {
-      text-align: center; /* لوضع المحتوى في وسط الصفحة */
-      margin: 0; /* لإزالة هوامش الصفحة الافتراضية */
+      text-align: center;
+      margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh; /* تعيين ارتفاع الصفحة بنسبة للشاشة بالكامل */
+      height: 100vh;
+    }
+
+    #numberContainer {
+      border: 3px solid black;
+      padding: 10px;
+      margin-top: 20px;
+      width: 200px;
     }
   </style>
 </head>
 <body>
 
-<button onclick="generateRandomNumber()">إنشاء رقم عشوائي ونسخه</button>
-<p id="randomNumber"></p>
+<div id="numberContainer">
+  <p id="randomNumber"></p>
+</div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  generateRandomNumber();
+});
+
 function generateRandomNumber() {
   fetch('txt.txt')
     .then(response => response.text())
@@ -31,16 +43,6 @@ function generateRandomNumber() {
       const randomNumber = numbersArray[randomIndex].trim();
       
       document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
-
-      // نسخ الرقم إلى الحافظة
-      const textArea = document.createElement("textarea");
-      textArea.value = randomNumber;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-
-      alert("تم نسخ الرقم العشوائي: " + randomNumber);
     })
     .catch(error => console.error('حدث خطأ:', error));
 }
