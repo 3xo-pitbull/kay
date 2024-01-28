@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عرض رقم عشوائي</title>
+  <title>عرض مفتاح يومي</title>
   <style>
     body {
       text-align: center;
@@ -31,7 +31,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  generateRandomNumber();
+  checkForDailyKey();
   setClickEvent();
 });
 
@@ -43,15 +43,29 @@ function setClickEvent() {
   });
 }
 
-function generateRandomNumber() {
+function checkForDailyKey() {
+  const today = new Date().toLocaleDateString();
+  const storedDate = localStorage.getItem('lastAccessDate');
+
+  if (today !== storedDate) {
+    generateAndDisplayKey();
+    localStorage.setItem('lastAccessDate', today);
+  } else {
+    const storedKey = localStorage.getItem('dailyKey');
+    document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + storedKey;
+  }
+}
+
+function generateAndDisplayKey() {
   fetch('txt.txt')
     .then(response => response.text())
     .then(data => {
       const numbersArray = data.split('\n');
       const randomIndex = Math.floor(Math.random() * numbersArray.length);
-      const randomNumber = numbersArray[randomIndex].trim();
+      const dailyKey = numbersArray[randomIndex].trim();
       
-      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
+      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + dailyKey;
+      localStorage.setItem('dailyKey', dailyKey);
     })
     .catch(error => console.error('حدث خطأ:', error));
 }
