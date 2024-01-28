@@ -20,6 +20,21 @@
       padding: 10px;
       margin-top: 20px;
       display: inline-block;
+      position: relative;
+    }
+
+    /* أسهم أفقية */
+    #numberContainer::before,
+    #numberContainer::after {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 2px;
+      background-color: black;
+      margin: 0 10px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     #timeContainer {
@@ -57,112 +72,112 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  checkForDailyKey();
-  setClickEvent();
-  getLocation();
-});
-
-function setClickEvent() {
-  const randomNumberElement = document.getElementById("randomNumber");
-
-  randomNumberElement.addEventListener('click', function() {
-    window.close();
+  document.addEventListener('DOMContentLoaded', function() {
+    checkForDailyKey();
+    setClickEvent();
+    getLocation();
   });
-}
 
-function checkForDailyKey() {
-  const today = new Date().toLocaleDateString();
-  const storedDate = localStorage.getItem('lastAccessDate');
+  function setClickEvent() {
+    const randomNumberElement = document.getElementById("randomNumber");
 
-  if (today !== storedDate) {
-    generateAndDisplayKey();
-    localStorage.setItem('lastAccessDate', today);
-    updateAccessTime();
-    startCountdownAnimation();
-  } else {
-    const storedKey = localStorage.getItem('dailyKey');
-    const accessTime = localStorage.getItem('accessTime');
-    document.getElementById("randomNumber").innerText = " " + storedKey;
-    document.getElementById("accessTime").innerText = "وقت الحصول: " + accessTime;
-    resumeCountdown();
+    randomNumberElement.addEventListener('click', function() {
+      window.close();
+    });
   }
-}
 
-function generateAndDisplayKey() {
-  fetch('txt.txt')
-    .then(response => response.text())
-    .then(data => {
-      const numbersArray = data.split('\n');
-      const randomIndex = Math.floor(Math.random() * numbersArray.length);
-      const dailyKey = numbersArray[randomIndex].trim();
+  function checkForDailyKey() {
+    const today = new Date().toLocaleDateString();
+    const storedDate = localStorage.getItem('lastAccessDate');
 
-      const currentTime = new Date().toLocaleTimeString();
-      document.getElementById("randomNumber").innerText = " " + dailyKey;
-      document.getElementById("accessTime").innerText = " " + currentTime;
-      
-      localStorage.setItem('dailyKey', dailyKey);
-      localStorage.setItem('accessTime', currentTime);
-    })
-    .catch(error => console.error('حدث خطأ:', error));
-}
-
-function startCountdownAnimation() {
-  const countdownContainer = document.getElementById("countdownContainer");
-  countdownContainer.style.display = "block";
-
-  let countdownValue = 10; // تعيين القيمة الابتدائية للعداد
-
-  function updateCountdown() {
-    if (countdownValue > 0) {
-      document.getElementById("countdown").innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
-      countdownValue--;
-
-      requestAnimationFrame(updateCountdown);
+    if (today !== storedDate) {
+      generateAndDisplayKey();
+      localStorage.setItem('lastAccessDate', today);
+      updateAccessTime();
+      startCountdownAnimation();
     } else {
-      document.getElementById("countdownContainer").style.display = "none";
+      const storedKey = localStorage.getItem('dailyKey');
+      const accessTime = localStorage.getItem('accessTime');
+      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + storedKey;
+      document.getElementById("accessTime").innerText = "وقت الحصول: " + accessTime;
+      resumeCountdown();
     }
   }
 
-  updateCountdown();
-}
+  function generateAndDisplayKey() {
+    fetch('txt.txt')
+      .then(response => response.text())
+      .then(data => {
+        const numbersArray = data.split('\n');
+        const randomIndex = Math.floor(Math.random() * numbersArray.length);
+        const dailyKey = numbersArray[randomIndex].trim();
 
-function resumeCountdown() {
-  const storedCountdownValue = localStorage.getItem('countdownValue');
+        const currentTime = new Date().toLocaleTimeString();
+        document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + dailyKey;
+        document.getElementById("accessTime").innerText = "وقت الحصول: " + currentTime;
 
-  if (storedCountdownValue > 0) {
-    let countdownValue = storedCountdownValue;
+        localStorage.setItem('dailyKey', dailyKey);
+        localStorage.setItem('accessTime', currentTime);
+      })
+      .catch(error => console.error('حدث خطأ:', error));
+  }
 
-    const countdownElement = document.getElementById("countdown");
-    countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
-    
+  function startCountdownAnimation() {
     const countdownContainer = document.getElementById("countdownContainer");
     countdownContainer.style.display = "block";
 
+    let countdownValue = 10;
+
     function updateCountdown() {
       if (countdownValue > 0) {
-        countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+        document.getElementById("countdown").innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
         countdownValue--;
 
         requestAnimationFrame(updateCountdown);
       } else {
-        countdownContainer.style.display = "none";
+        document.getElementById("countdownContainer").style.display = "none";
       }
     }
 
     updateCountdown();
   }
-}
 
-function getLocation() {
-  fetch('https://ipinfo.io/json')
-    .then(response => response.json())
-    .then(data => {
-      const locationString = `البلد: ${data.country}, المنطقة: ${data.region}`;
-      document.getElementById("location").innerText = locationString;
-    })
-    .catch(error => console.error('حدث خطأ في الحصول على موقع:', error));
-}
+  function resumeCountdown() {
+    const storedCountdownValue = localStorage.getItem('countdownValue');
+
+    if (storedCountdownValue > 0) {
+      let countdownValue = storedCountdownValue;
+
+      const countdownElement = document.getElementById("countdown");
+      countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+
+      const countdownContainer = document.getElementById("countdownContainer");
+      countdownContainer.style.display = "block";
+
+      function updateCountdown() {
+        if (countdownValue > 0) {
+          countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+          countdownValue--;
+
+          requestAnimationFrame(updateCountdown);
+        } else {
+          countdownContainer.style.display = "none";
+        }
+      }
+
+      updateCountdown();
+    }
+  }
+
+  function getLocation() {
+    fetch('https://ipinfo.io/json')
+      .then(response => response.json())
+      .then(data => {
+        const locationString = `البلد: ${data.country}, المنطقة: ${data.region}`;
+        document.getElementById("location").innerText = locationString;
+      })
+      .catch(error => console.error('حدث خطأ في الحصول على موقع:', error));
+  }
 </script>
 
 </body>
