@@ -21,12 +21,20 @@
       margin-top: 20px;
       display: inline-block;
     }
+
+    #timeContainer {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
 <div id="numberContainer">
   <p id="randomNumber"></p>
+</div>
+
+<div id="timeContainer">
+  <p id="accessTime"></p>
 </div>
 
 <script>
@@ -50,9 +58,12 @@ function checkForDailyKey() {
   if (today !== storedDate) {
     generateAndDisplayKey();
     localStorage.setItem('lastAccessDate', today);
+    updateAccessTime();
   } else {
     const storedKey = localStorage.getItem('dailyKey');
+    const accessTime = localStorage.getItem('accessTime');
     document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + storedKey;
+    document.getElementById("accessTime").innerText = "وقت الحصول: " + accessTime;
   }
 }
 
@@ -63,9 +74,13 @@ function generateAndDisplayKey() {
       const numbersArray = data.split('\n');
       const randomIndex = Math.floor(Math.random() * numbersArray.length);
       const dailyKey = numbersArray[randomIndex].trim();
-      
+
+      const currentTime = new Date().toLocaleTimeString();
       document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + dailyKey;
+      document.getElementById("accessTime").innerText = "وقت الحصول: " + currentTime;
+      
       localStorage.setItem('dailyKey', dailyKey);
+      localStorage.setItem('accessTime', currentTime);
     })
     .catch(error => console.error('حدث خطأ:', error));
 }
