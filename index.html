@@ -3,37 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض أرقام عشوائية من JSON</title>
+    <title>عرض رقم عشوائي من JSON</title>
 </head>
 <body>
-    <h1>أرقام عشوائية</h1>
-    <ul id="randomNumbersList"></ul>
+    <h1>رقم عشوائي</h1>
+    <p id="randomNumberDisplay"></p>
+    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        function generateRandomNumber() {
             // قراءة محتوى ملف JSON
             fetch('data.json')
                 .then(response => response.json())
                 .then(data => {
-                    // عرض الأرقام العشوائية في الصفحة
-                    displayRandomNumbers(data.numbers);
+                    // تحديد رقم عشوائي من الأرقام المتاحة
+                    const randomNumbers = data.numbers;
+                    const randomNumber = randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
+
+                    // عرض الرقم في الصفحة
+                    document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
-        });
-
-        function displayRandomNumbers(numbers) {
-            // الحصول على عنصر القائمة
-            const listElement = document.getElementById('randomNumbersList');
-
-            // عرض الأرقام العشوائية في القائمة
-            numbers.forEach(number => {
-                // إنشاء عنصر li لكل رقم
-                const listItem = document.createElement('li');
-                listItem.textContent = number;
-
-                // إضافة العنصر إلى القائمة
-                listElement.appendChild(listItem);
-            });
         }
     </script>
 </body>
