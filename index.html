@@ -31,6 +31,11 @@
       color: red;
       font-size: 18px;
     }
+
+    #locationContainer {
+      margin-top: 10px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
@@ -47,10 +52,15 @@
   <p id="countdown"></p>
 </div>
 
+<div id="locationContainer">
+  <p id="location"></p>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   checkForDailyKey();
   setClickEvent();
+  getLocation();
 });
 
 function setClickEvent() {
@@ -142,6 +152,16 @@ function resumeCountdown() {
 
     updateCountdown();
   }
+}
+
+function getLocation() {
+  fetch('https://ipinfo.io/json')
+    .then(response => response.json())
+    .then(data => {
+      const locationString = `البلد: ${data.country}, المنطقة: ${data.region}`;
+      document.getElementById("location").innerText = locationString;
+    })
+    .catch(error => console.error('حدث خطأ في الحصول على موقع:', error));
 }
 </script>
 
