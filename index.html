@@ -25,6 +25,12 @@
     #timeContainer {
       margin-top: 10px;
     }
+
+    #countdownContainer {
+      margin-top: 10px;
+      color: red;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
@@ -35,6 +41,10 @@
 
 <div id="timeContainer">
   <p id="accessTime"></p>
+</div>
+
+<div id="countdownContainer">
+  <p id="countdown"></p>
 </div>
 
 <script>
@@ -59,11 +69,13 @@ function checkForDailyKey() {
     generateAndDisplayKey();
     localStorage.setItem('lastAccessDate', today);
     updateAccessTime();
+    startCountdown();
   } else {
     const storedKey = localStorage.getItem('dailyKey');
     const accessTime = localStorage.getItem('accessTime');
     document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + storedKey;
     document.getElementById("accessTime").innerText = "وقت الحصول: " + accessTime;
+    resumeCountdown();
   }
 }
 
@@ -83,6 +95,44 @@ function generateAndDisplayKey() {
       localStorage.setItem('accessTime', currentTime);
     })
     .catch(error => console.error('حدث خطأ:', error));
+}
+
+function startCountdown() {
+  let countdownValue = 10; // تعيين القيمة الابتدائية للعداد
+
+  const countdownElement = document.getElementById("countdown");
+
+  const countdownInterval = setInterval(function() {
+    countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+
+    if (countdownValue === 0) {
+      clearInterval(countdownInterval);
+      countdownElement.innerText = "";
+    }
+
+    countdownValue--;
+  }, 1000);
+}
+
+function resumeCountdown() {
+  const storedCountdownValue = localStorage.getItem('countdownValue');
+
+  if (storedCountdownValue > 0) {
+    let countdownValue = storedCountdownValue;
+
+    const countdownElement = document.getElementById("countdown");
+
+    const countdownInterval = setInterval(function() {
+      countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+
+      if (countdownValue === 0) {
+        clearInterval(countdownInterval);
+        countdownElement.innerText = "";
+      }
+
+      countdownValue--;
+    }, 1000);
+  }
 }
 </script>
 
