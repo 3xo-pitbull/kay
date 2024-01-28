@@ -69,7 +69,7 @@ function checkForDailyKey() {
     generateAndDisplayKey();
     localStorage.setItem('lastAccessDate', today);
     updateAccessTime();
-    startCountdown();
+    startCountdownAnimation();
   } else {
     const storedKey = localStorage.getItem('dailyKey');
     const accessTime = localStorage.getItem('accessTime');
@@ -97,21 +97,24 @@ function generateAndDisplayKey() {
     .catch(error => console.error('حدث خطأ:', error));
 }
 
-function startCountdown() {
+function startCountdownAnimation() {
+  const countdownContainer = document.getElementById("countdownContainer");
+  countdownContainer.style.display = "block";
+
   let countdownValue = 10; // تعيين القيمة الابتدائية للعداد
 
-  const countdownElement = document.getElementById("countdown");
+  function updateCountdown() {
+    if (countdownValue > 0) {
+      document.getElementById("countdown").innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+      countdownValue--;
 
-  const countdownInterval = setInterval(function() {
-    countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
-
-    if (countdownValue === 0) {
-      clearInterval(countdownInterval);
-      countdownElement.innerText = "";
+      requestAnimationFrame(updateCountdown);
+    } else {
+      document.getElementById("countdownContainer").style.display = "none";
     }
+  }
 
-    countdownValue--;
-  }, 1000);
+  updateCountdown();
 }
 
 function resumeCountdown() {
@@ -121,17 +124,23 @@ function resumeCountdown() {
     let countdownValue = storedCountdownValue;
 
     const countdownElement = document.getElementById("countdown");
+    countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+    
+    const countdownContainer = document.getElementById("countdownContainer");
+    countdownContainer.style.display = "block";
 
-    const countdownInterval = setInterval(function() {
-      countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+    function updateCountdown() {
+      if (countdownValue > 0) {
+        countdownElement.innerText = `ستحصل على المفتاح مرة أخرى في: ${countdownValue} ثواني`;
+        countdownValue--;
 
-      if (countdownValue === 0) {
-        clearInterval(countdownInterval);
-        countdownElement.innerText = "";
+        requestAnimationFrame(updateCountdown);
+      } else {
+        countdownContainer.style.display = "none";
       }
+    }
 
-      countdownValue--;
-    }, 1000);
+    updateCountdown();
   }
 }
 </script>
