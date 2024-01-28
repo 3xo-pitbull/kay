@@ -12,28 +12,13 @@
 
 <script>
 function generateRandomNumber() {
-  fetch('1.txt')
+  fetch('txt.txt')
     .then(response => response.text())
     .then(data => {
       const numbersArray = data.split('\n');
       const randomIndex = Math.floor(Math.random() * numbersArray.length);
       const randomNumber = numbersArray[randomIndex].trim();
-
-      // حذف الرقم من القائمة
-      numbersArray.splice(randomIndex, 1);
-
-      // تحديث الملف txt.txt بالأرقام المتبقية
-      const updatedData = numbersArray.join('\n');
-      const blob = new Blob([updatedData], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '1.txt';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
+      
       document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
 
       // نسخ الرقم إلى الحافظة
