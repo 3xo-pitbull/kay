@@ -92,8 +92,8 @@
   }
 
   function generateAndDisplayKey() {
-    fetch('txt.txt')
-      .then(response => response.text())
+    fetch('txt.json')
+      .then(response => response.json())
       .then(data => {
         const numbersArray = data.split('\n');
         const randomIndex = Math.floor(Math.random() * numbersArray.length);
