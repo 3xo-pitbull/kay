@@ -15,13 +15,11 @@
       height: 100vh;
     }
 
- #numberContainer {
-  border: 3px solid black;
-  padding: 10px;
-  margin-top: 20px;
-  width: 150px; /* يمكنك تعديل هذه القيمة بحسب تفضيلك */
-}
-
+    #numberContainer {
+      border: 3px solid black;
+      padding: 10px;
+      margin-top: 20px;
+      display: inline-block;
     }
   </style>
 </head>
@@ -34,7 +32,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   generateRandomNumber();
+  setClickEvent();
 });
+
+function setClickEvent() {
+  const randomNumberElement = document.getElementById("randomNumber");
+
+  randomNumberElement.addEventListener('click', function() {
+    window.close();
+  });
+}
 
 function generateRandomNumber() {
   fetch('txt.txt')
@@ -44,7 +51,7 @@ function generateRandomNumber() {
       const randomIndex = Math.floor(Math.random() * numbersArray.length);
       const randomNumber = numbersArray[randomIndex].trim();
       
-      document.getElementById("randomNumber").innerText = " " + randomNumber;
+      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
     })
     .catch(error => console.error('حدث خطأ:', error));
 }
