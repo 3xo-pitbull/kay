@@ -85,8 +85,8 @@
     } else {
       const storedKey = localStorage.getItem('dailyKey');
       const accessTime = localStorage.getItem('accessTime');
-      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + storedKey;
-      document.getElementById("accessTime").innerText = "وقت الحصول: " + accessTime;
+      document.getElementById("randomNumber").innerText = "" + storedKey;
+      document.getElementById("accessTime").innerText = "tim:als" + accessTime;
       resumeCountdown();
     }
   }
@@ -100,8 +100,8 @@
         const dailyKey = numbersArray[randomIndex].trim();
 
         const currentTime = new Date().toLocaleTimeString();
-        document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + dailyKey;
-        document.getElementById("accessTime").innerText = "وقت الحصول: " + currentTime;
+        document.getElementById("randomNumber").innerText = " " + dailyKey;
+        document.getElementById("accessTime").innerText = "tim:all " + currentTime;
 
         localStorage.setItem('dailyKey', dailyKey);
         localStorage.setItem('accessTime', currentTime);
