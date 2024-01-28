@@ -7,12 +7,12 @@
 </head>
 <body>
 
-<button onclick="generateRandomNumber()">إنشاء رقم عشوائي</button>
+<button onclick="generateRandomNumber()">إنشاء رقم عشوائي ونسخه</button>
 <p id="randomNumber"></p>
 
 <script>
 function generateRandomNumber() {
-  fetch('file.txt') // اسم الملف النصي الذي يحتوي على الأرقام
+  fetch('file.txt')
     .then(response => response.text())
     .then(data => {
       const numbersArray = data.split('\n');
@@ -20,6 +20,16 @@ function generateRandomNumber() {
       const randomNumber = numbersArray[randomIndex].trim();
       
       document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
+
+      // نسخ الرقم إلى الحافظة
+      const textArea = document.createElement("textarea");
+      textArea.value = randomNumber;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+
+      alert("تم نسخ الرقم العشوائي: " + randomNumber);
     })
     .catch(error => console.error('حدث خطأ:', error));
 }
