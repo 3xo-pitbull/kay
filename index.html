@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مولد أرقام عشوائية</title>
+  <style>
+    body {
+      text-align: center; /* لوضع المحتوى في وسط الصفحة */
+      margin: 0; /* لإزالة هوامش الصفحة الافتراضية */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh; /* تعيين ارتفاع الصفحة بنسبة للشاشة بالكامل */
+    }
+  </style>
 </head>
 <body>
 
@@ -19,7 +30,7 @@ function generateRandomNumber() {
       const randomIndex = Math.floor(Math.random() * numbersArray.length);
       const randomNumber = numbersArray[randomIndex].trim();
       
-      document.getElementById("randomNumber").innerText = " " + randomNumber;
+      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
 
       // نسخ الرقم إلى الحافظة
       const textArea = document.createElement("textarea");
