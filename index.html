@@ -5,39 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>kay</title>
   <style>
-    body {
-      text-align: center;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    #numberContainer {
-      border: 3px solid black;
-      padding: 10px;
-      margin-top: 20px;
-      display: inline-block;
-      position: relative;
-    
-    }
-
-    #timeContainer {
-      margin-top: 10px;
-    }
-
-    #countdownContainer {
-      margin-top: 10px;
-      color: red;
-      font-size: 18px;
-    }
-
-    #locationContainer {
-      margin-top: 10px;
-      font-size: 18px;
-    }
+    /* أضف أي تعديلات على الستايل حسب الحاجة */
   </style>
 </head>
 <body>
@@ -92,12 +60,10 @@
   }
 
   function generateAndDisplayKey() {
-    fetch('txt.json')
+    fetch('your_file.json')  // قم بتغيير 'your_file.json' إلى اسم الملف الفعلي
       .then(response => response.json())
       .then(data => {
-        const numbersArray = data.split('\n');
-        const randomIndex = Math.floor(Math.random() * numbersArray.length);
-        const dailyKey = numbersArray[randomIndex].trim();
+        const dailyKey = data.dailyKey;
 
         const currentTime = new Date().toLocaleTimeString();
         document.getElementById("randomNumber").innerText = " " + dailyKey;
