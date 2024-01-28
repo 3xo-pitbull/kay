@@ -3,40 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض رقم عشوائي من JSON</title>
+    <title>عرض وحذف رقم عشوائي من JSON</title>
 </head>
 <body>
     <h1>رقم عشوائي</h1>
     <p id="randomNumberDisplay"></p>
-    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
+    <button onclick="generateAndRemoveRandomNumber()">عرض رقم عشوائي وحذفه</button>
 
     <script>
-        function generateRandomNumber() {
+        function generateAndRemoveRandomNumber() {
             // قراءة محتوى ملف JSON
             fetch('data.json')
                 .then(response => response.json())
                 .then(data => {
                     // تحديد رقم عشوائي من الأرقام المتاحة
                     const randomNumbers = data.numbers;
-                    const randomNumberIndex = Math.floor(Math.random() * randomNumbers.length);
-                    const randomNumber = randomNumbers[randomNumberIndex];
 
-                    // حذف الرقم من القائمة
-                    randomNumbers.splice(randomNumberIndex, 1);
+                    if (randomNumbers.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                        const randomNumber = randomNumbers[randomIndex];
 
-                    // عرض الرقم في الصفحة
-                    document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+                        // عرض الرقم في الصفحة
+                        document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
 
-                    // تحديث ملف JSON بعد حذف الرقم
-                    const updatedData = { numbers: randomNumbers };
-                    fetch('data.json', {
-                        method: 'PUT', // يمكنك استخدام 'POST' أيضًا حسب الحاجة
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(updatedData),
-                    })
-                    .catch(error => console.error('حدث خطأ في تحديث الملف JSON:', error));
+                        // حذف الرقم من المصفوفة
+                        randomNumbers.splice(randomIndex, 1);
+                    } else {
+                        document.getElementById('randomNumberDisplay').textContent = 'لقد تم عرض كل الأرقام.';
+                    }
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
