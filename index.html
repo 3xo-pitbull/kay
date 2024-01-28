@@ -2,29 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>قراءة رقم عشوائي من ملف نصي</title>
-  <script>
-    document.getElementById('readFileButton').addEventListener('click', readFile);
-
-    function readFile() {
-      fetch('file.txt') // استبدل بمسار الملف الفعلي
-        .then(response => response.text())
-        .then(data => {
-          const lines = data.split('\n'); // افصل النص إلى أسطر
-          const randomNumber = parseInt(lines[Math.floor(Math.random() * lines.length)]);
-
-          if (!isNaN(randomNumber)) {
-            alert("الرقم العشوائي: " + randomNumber);
-          } else {
-            alert("لم يتم العثور على رقم عشوائي صالح في الملف.");
-          }
-        })
-        .catch(error => console.error('حدث خطأ: ', error));
-    }
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مولد أرقام عشوائية</title>
 </head>
 <body>
-  <h1>قراءة رقم عشوائي من ملف نصي</h1>
-  <button id="readFileButton">قراءة الملف</button>
+
+<button onclick="generateRandomNumber()">إنشاء رقم عشوائي</button>
+<p id="randomNumber"></p>
+
+<script>
+function generateRandomNumber() {
+  fetch('file.txt') // اسم الملف النصي الذي يحتوي على الأرقام
+    .then(response => response.text())
+    .then(data => {
+      const numbersArray = data.split('\n');
+      const randomIndex = Math.floor(Math.random() * numbersArray.length);
+      const randomNumber = numbersArray[randomIndex].trim();
+      
+      document.getElementById("randomNumber").innerText = "الرقم العشوائي: " + randomNumber;
+    })
+    .catch(error => console.error('حدث خطأ:', error));
+}
+</script>
+
 </body>
 </html>
