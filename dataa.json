@@ -1,1 +1,57 @@
-{"numbers":[47198805277993,617117051691350,923632626124247]}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #random-number {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<button onclick="getRandomNumber()" id="random-button">Generate key</button>
+
+<script>
+  function getRandomNumber() {
+    // تعطيل الزر بعد النقر
+    
+
+    // جلب ملف JSON باستخدام fetch
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        // الحصول على قائمة الأرقام
+        const numbersList = Object.keys(data.numbers);
+
+        // اختيار رقم عشوائي من القائمة
+        const randomIndex = Math.floor(Math.random() * numbersList.length);
+        const randomNumber = numbersList[randomIndex];
+
+        // عرض الرقم داخل الزر
+        document.getElementById('random-button').innerText = `available ${randomNumber}`;
+      })
+      .catch(error => {
+        console.error('حدث خطأ في جلب الملف:', error);
+      });
+  }
+</script>
+
+</body>
+</html>
