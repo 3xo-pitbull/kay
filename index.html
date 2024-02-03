@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض وحذف رقم عشوائي من JSON</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عرض رقم عشوائي من ملف JSON</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #random-number {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-    <h1>رقم عشوائي</h1>
-    <p id="randomNumberDisplay"></p>
-    <button onclick="generateAndRemoveRandomNumber()">عرض رقم عشوائي وحذفه</button>
 
-    <script>
-        function generateAndRemoveRandomNumber() {
-            // قراءة محتوى ملف JSON
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    // تحديد رقم عشوائي من الأرقام المتاحة
-                    const randomNumbers = data.numbers;
+<button onclick="getRandomNumber()">عرض رقم عشوائي</button>
+<div id="random-number"></div>
 
-                    if (randomNumbers.length > 0) {
-                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-                        const randomNumber = randomNumbers[randomIndex];
+<script>
+  function getRandomNumber() {
+    // جلب ملف JSON باستخدام fetch
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        // الحصول على قائمة الأرقام
+        const numbersList = Object.keys(data.numbers);
 
-                        // عرض الرقم في الصفحة
-                        document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+        // اختيار رقم عشوائي من القائمة
+        const randomIndex = Math.floor(Math.random() * numbersList.length);
+        const randomNumber = numbersList[randomIndex];
 
-                        // حذف الرقم من المصفوفة
-                        randomNumbers.splice(randomIndex, 1);
-                    } else {
-                        document.getElementById('randomNumberDisplay').textContent = 'لقد تم عرض كل الأرقام.';
-                    }
-                })
-                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
-        }
-    </script>
+        // عرض الرقم على الصفحة
+        document.getElementById('random-number').innerText = `الرقم العشوائي: ${randomNumber}`;
+      })
+      .catch(error => {
+        console.error('حدث خطأ في جلب الملف:', error);
+      });
+  }
+</script>
+
 </body>
 </html>
