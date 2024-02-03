@@ -26,11 +26,14 @@
 </head>
 <body>
 
-<button onclick="getRandomNumber()">Generate key</button>
+<button onclick="getRandomNumber()" id="random-button">Generate key</button>
 <span id="random-number"></span>
 
 <script>
   function getRandomNumber() {
+    // تعطيل الزر بعد النقر
+    document.getElementById('random-button').disabled = true;
+
     // جلب ملف JSON باستخدام fetch
     fetch('data.json')
       .then(response => response.json())
@@ -43,7 +46,7 @@
         const randomNumber = numbersList[randomIndex];
 
         // عرض الرقم داخل الزر
-        document.querySelector('button').innerText = ` ${randomNumber}`;
+        document.getElementById('random-number').innerText = `available ${randomNumber}`;
       })
       .catch(error => {
         console.error('حدث خطأ في جلب الملف:', error);
