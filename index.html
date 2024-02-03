@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عرض رقم عشوائي من ملف JSON</title>
+  <title></title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,7 +27,6 @@
 <body>
 
 <button onclick="getRandomNumber()" id="random-button">Generate key</button>
-<span id="random-number"></span>
 
 <script>
   function getRandomNumber() {
@@ -46,7 +45,7 @@
         const randomNumber = numbersList[randomIndex];
 
         // عرض الرقم داخل الزر
-        document.getElementById('random-number').innerText = `available ${randomNumber}`;
+        document.getElementById('random-button').innerText = `available ${randomNumber}`;
       })
       .catch(error => {
         console.error('حدث خطأ في جلب الملف:', error);
