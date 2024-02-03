@@ -27,12 +27,12 @@
 <body>
 
 <button onclick="getRandomNumber()">عرض رقم عشوائي</button>
-<div id="random-number"></div>
+<span id="random-number"></span>
 
 <script>
   function getRandomNumber() {
     // جلب ملف JSON باستخدام fetch
-    fetch('data.json')
+    fetch('random_numbers_data.json')
       .then(response => response.json())
       .then(data => {
         // الحصول على قائمة الأرقام
@@ -42,8 +42,8 @@
         const randomIndex = Math.floor(Math.random() * numbersList.length);
         const randomNumber = numbersList[randomIndex];
 
-        // عرض الرقم على الصفحة
-        document.getElementById('random-number').innerText = `الرقم العشوائي: ${randomNumber}`;
+        // عرض الرقم داخل الزر
+        document.querySelector('button').innerText = `الرقم العشوائي: ${randomNumber}`;
       })
       .catch(error => {
         console.error('حدث خطأ في جلب الملف:', error);
