@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<button onclick="getRandomNumber()">عرض رقم عشوائي</button>
+<button onclick="getRandomNumber()">Generate key</button>
 <span id="random-number"></span>
 
 <script>
@@ -43,7 +43,7 @@
         const randomNumber = numbersList[randomIndex];
 
         // عرض الرقم داخل الزر
-        document.querySelector('button').innerText = `الرقم العشوائي: ${randomNumber}`;
+        document.querySelector('button').innerText = ` ${randomNumber}`;
       })
       .catch(error => {
         console.error('حدث خطأ في جلب الملف:', error);
