@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script defer src="face-api.min.js"></script>
-  <script defer src="script.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    canvas {
-      position: absolute;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eye Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/tracking/build/tracking.js"></script>
 </head>
 <body>
-  <video id="video" width="720" height="560" autoplay muted></video>
+    <h1>Eye Tracker</h1>
+    <div>
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+
+    <script>
+        // استدعاء محدد المسار لتتبع العين
+        var tracker = new tracking.ObjectTracker('eye');
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+        tracker.setEdgesDensity(0.1);
+
+        // تحديد مسار محدد العين
+        tracking.track('#video', tracker, { camera: true });
+
+        // إضافة الإطار حول العين
+        tracker.on('track', function(event) {
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            event.data.forEach(function(rect) {
+                context.strokeStyle = '#ff0000';
+                context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+            });
+        });
+
+        // الحصول على إمكانية الوصول إلى الكاميرا الويب
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+            })
+            .catch(function(err) {
+                console.error('Error accessing the webcam: ', err);
+            });
+    </script>
 </body>
 </html>
