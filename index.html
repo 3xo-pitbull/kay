@@ -1,49 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eye Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/tracking/build/tracking.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take and Upload Photo</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#photo-preview {
+  margin-top: 20px;
+  max-width: 300px;
+}
+</style>
 </head>
 <body>
-    <h1>Eye Tracker</h1>
-    <div>
-        <video id="video" width="640" height="480" autoplay></video>
-        <canvas id="canvas" width="640" height="480"></canvas>
-    </div>
+<div class="container">
+  <h1>Take and Upload Photo</h1>
+  <img id="photo-preview" src="#" alt="Your photo will appear here" style="display: none;">
+</div>
 
-    <script>
-        // استدعاء محدد المسار لتتبع العين
-        var tracker = new tracking.ObjectTracker('eye');
-        tracker.setInitialScale(4);
-        tracker.setStepSize(2);
-        tracker.setEdgesDensity(0.1);
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-storage.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+// Initialize Firebase
+const firebaseConfig = {
+ apiKey: "AIzaSyBL2hddqUVVSUDbPB-6GP2CgFUkzWKa4Nk",
+  authDomain: "comid-b75fd.firebaseapp.com",
+  projectId: "comid-b75fd",
+  storageBucket: "comid-b75fd.appspot.com",
+  messagingSenderId: "1055136088878",
+  appId: "1:1055136088878:web:c9b4fb7f1d2e52c18fb0bf",
+  measurementId: "G-GV2QSP91JB"
+};
 
-        // تحديد مسار محدد العين
-        tracking.track('#video', tracker, { camera: true });
+firebase.initializeApp(firebaseConfig);
 
-        // إضافة الإطار حول العين
-        tracker.on('track', function(event) {
-            var canvas = document.getElementById('canvas');
-            var context = canvas.getContext('2d');
-            context.clearRect(0, 0, canvas.width, canvas.height);
+document.addEventListener("DOMContentLoaded", function() {
+  const photoPreview = document.getElementById('photo-preview');
 
-            event.data.forEach(function(rect) {
-                context.strokeStyle = '#ff0000';
-                context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-            });
+  // Take photo automatically when the page loads
+  takePhoto().then(function(blob) {
+    // Display the taken photo
+    const imageUrl = URL.createObjectURL(blob);
+    photoPreview.src = imageUrl;
+    photoPreview.style.display = 'block';
+
+    // Upload the photo to Firebase Storage
+    uploadPhoto(blob).then(function() {
+      // Check the uploaded photo against the stored face
+      checkUploadedPhoto();
+    });
+  });
+
+  function takePhoto() {
+    return new Promise(function(resolve, reject) {
+      const constraints = { video: true };
+
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(stream) {
+          const video = document.createElement('video');
+          video.srcObject = stream;
+          video.play();
+
+          setTimeout(function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas content to blob
+            canvas.toBlob(function(blob) {
+              stream.getVideoTracks().forEach(function(track) {
+                track.stop();
+              });
+              resolve(blob);
+            }, 'image/jpeg');
+
+          }, 5000); // Take photo after 5 seconds
+        })
+        .catch(function(error) {
+          reject(error);
         });
+    });
+  }
 
-        // الحصول على إمكانية الوصول إلى الكاميرا الويب
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                var video = document.getElementById('video');
-                video.srcObject = stream;
-            })
-            .catch(function(err) {
-                console.error('Error accessing the webcam: ', err);
-            });
-    </script>
+  function uploadPhoto(blob) {
+    return new Promise(function(resolve, reject) {
+      const storageRef = firebase.storage().ref();
+      const photoRef = storageRef.child('photos/' + generateRandomString(10) + '.jpg');
+
+      photoRef.put(blob).then(function(snapshot) {
+        console.log('Uploaded a blob or file!');
+        resolve();
+      }).catch(function(error) {
+        console.error('Error uploading file:', error);
+        reject(error);
+      });
+    });
+  }
+
+  function checkUploadedPhoto() {
+    // Implement face recognition and comparison here
+    // Example: Fetch the stored face embedding from Firebase Storage and compare it with the uploaded face
+    // If the faces match, take appropriate action
+    // Otherwise, take another action
+  }
+
+  function generateRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+});
+</script>
 </body>
 </html>
