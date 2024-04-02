@@ -120,10 +120,7 @@
     <ul id="userInfo"></ul>
   </div>
 
-  <div class="userInfoContent" id="userInfoContent" style="display: none;">
-    
-    <ul id="userInfo"></ul>
-  </div>
+  
 
   <div class="chatBox" id="chatBox" style="display: none;">
     <div id="chatContainer">
