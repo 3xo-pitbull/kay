@@ -22,7 +22,7 @@
 
     .form-container {
       background-color: #fff;
-      max-width: 300px;
+      max-width: 100%;
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -56,28 +56,33 @@
     }
 
     .chat-container {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      height: 400px;
       background-color: #fff;
-      margin-top: 20px;
+      margin-top: 100px;
       overflow-y: scroll;
       padding: 10px;
-      border-radius: 5px;
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .message {
+      max-width: 100%;
       background-color: #f2f2f2;
       padding: 10px;
-      margin-bottom: 5px;
-      border-radius: 5px;
+      margin-bottom: 6px;
+      border-radius: 6px;
       position: relative;
     }
 
-    .username {
-      position: absolute;
+     .username {
+     
+       
+       
+       
+       position: absolute;
       top: -15px;
-      left: -10px;
+      
       font-size: 10px;
       color: red;
       padding: 5px;
@@ -85,11 +90,23 @@
       border-radius: 5px;
       background-color: white;
       cursor: pointer;
+    
+       
+       
+       
+       
+       
     }
 
     .text {
-      margin-left: 5px;
+      margin-left: 1px;
     }
+
+    .message-current-user .username {
+      right: -15px; /* تحديد موقع الاسم عند المستخدم الحالي */
+    }
+
+    
 
     /* عرض صفحة العرض العائمة */
     .user-info-popup {
@@ -110,6 +127,11 @@
       top: 10px;
       right: 10px;
       cursor: pointer;
+      color: red;
+    }
+    .message-current-user {
+  justify-content: flex-end;
+  text-align: right;
     }
   </style>
 </head>
@@ -143,7 +165,7 @@
   <script>
     // Firebase configuration
     var firebaseConfig = {
-    apiKey: "AIzaSyBL2hddqUVVSUDbPB-6GP2CgFUkzWKa4Nk",
+      apiKey: "AIzaSyBL2hddqUVVSUDbPB-6GP2CgFUkzWKa4Nk",
   authDomain: "comid-b75fd.firebaseapp.com",
   projectId: "comid-b75fd",
   storageBucket: "comid-b75fd.appspot.com",
@@ -204,6 +226,12 @@
 
       textElement.innerText = message.text;
       messageElement.appendChild(textElement);
+
+      // Check if the message matches the current user's UID
+      var user = firebase.auth().currentUser;
+      if (user && message.uid === user.uid) {
+        messageElement.classList.add('message-current-user');
+      }
 
       chatContainer.appendChild(messageElement);
       // Scroll to bottom
