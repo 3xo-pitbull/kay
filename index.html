@@ -81,16 +81,16 @@
        
        
        position: absolute;
-      top: -15px;
+      top: -5px;
       
       font-size: 10px;
       color: red;
-      padding: 5px;
+      padding: 1px;
       border: 1px solid red;
-      border-radius: 5px;
+      border-radius: 10px;
       background-color: white;
       cursor: pointer;
-    
+    justify-content: flex-end;
        
        
        
@@ -112,7 +112,7 @@
     .user-info-popup {
       display: none;
       position: fixed;
-      z-index: 999;
+      z-index: 999px;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
@@ -124,14 +124,15 @@
 
     .close-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 30px;
+      right: 30px;
       cursor: pointer;
       color: red;
     }
     .message-current-user {
-  justify-content: flex-end;
-  text-align: right;
+      justify-content: flex-end;
+      text-align: right;
+      background-color: #BBDEFB;
     }
   </style>
 </head>
@@ -285,6 +286,24 @@
       var userInfoPopup = document.getElementById('user-info-popup');
       userInfoPopup.style.display = 'none';
     }
+    
+    
+    
+    
+    // Function to send a message
+function sendMessage() {
+  var message = document.getElementById("message").value;
+  if (message !== "") {
+    var user = firebase.auth().currentUser;
+    var uid = user.uid;
+    messagesRef.push({
+      text: message,
+      uid: uid
+    });
+    document.getElementById("message").value = ''; // Clear the message input field
+  }
+}
+
   </script>
 </body>
 </html>
